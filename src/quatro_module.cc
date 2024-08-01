@@ -71,9 +71,11 @@ Eigen::Matrix4d quatro<PointType>::align(const pcl::PointCloud<PointType> &src, 
 		Quatro_.solve(src_cloud_, tgt_cloud_, correspondences_);
 		teaser::RegistrationSolution solution_by_quatro_ = Quatro_.getSolution();
 		if_valid = solution_by_quatro_.valid; //if the result is valid or not
-		
-		out_tf_.block<3, 3>(0, 0) = solution_by_quatro_.rotation;
-		out_tf_.block<3, 1>(0, 3) = solution_by_quatro_.translation;
+		if (if_valid)
+		{
+			out_tf_.block<3, 3>(0, 0) = solution_by_quatro_.rotation;
+			out_tf_.block<3, 1>(0, 3) = solution_by_quatro_.translation;
+		}
 	}
 	return out_tf_;
 }
